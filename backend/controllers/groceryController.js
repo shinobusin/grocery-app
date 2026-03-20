@@ -38,3 +38,15 @@ exports.deleteItem = async (req, res) => {
   await Grocery.findByIdAndDelete(req.params.id);
   res.json({ message: "Item deleted" });
 };
+
+// Toggle purchase status
+app.put('/api/items/:id', async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+    item.isPurchased = !item.isPurchased; // Toggle the current status
+    await item.save();
+    res.json(item);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
